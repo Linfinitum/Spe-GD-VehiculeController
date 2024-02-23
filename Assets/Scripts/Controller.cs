@@ -19,6 +19,8 @@ public class Controller : MonoBehaviour
     [SerializeField] float motorTorque = 200;
     [SerializeField] float steeringMax = 4;
     [SerializeField] float radius = 6;
+    private Rigidbody rigidbody;
+    [SerializeField] float KPH;
     
     // Start is called before the first frame update
     void Start()
@@ -96,6 +98,8 @@ public class Controller : MonoBehaviour
             }
         }
 
+        KPH = rigidbody.velocity.magnitude * 3.6f;
+
     }
 
     private void SteerVehicle()
@@ -144,6 +148,7 @@ public class Controller : MonoBehaviour
     private void getObjects()
     {
         IM = GetComponent<InputManager>();
+        rigidbody = GetComponent<Rigidbody>();
     }
 
 

@@ -25,7 +25,7 @@ public class CameraController : MonoBehaviour
     private void FixedUpdate()
     {
         follow();
-        speed = (RR.KPH >= 50) ? 20 : RR.KPH / 4;
+        //speed = (RR.KPH >= 50) ? 20 : RR.KPH / 4;
     }
 
     private void follow()

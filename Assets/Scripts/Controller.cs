@@ -6,14 +6,14 @@ public class Controller : MonoBehaviour
 {
     internal enum driveType
     {
-        frontWheelDrive,
-        rearWheelDrive,
-        allWheelDrive
+        frontWheelDrive = 0,
+        rearWheelDrive = 1,
+        allWheelDrive = 2
     }
 
-    [SerializeField] driveType drive;
+    [SerializeField] driveType _drive;
 
-    [SerializeField] InputManager IM;
+    [SerializeField] InputManager InputManager;
     [SerializeField] WheelCollider[] wheels = new WheelCollider[4];
     [SerializeField] GameObject[] wheelMesh = new GameObject[4];
     [SerializeField] float motorTorque = 200;
@@ -21,7 +21,11 @@ public class Controller : MonoBehaviour
     [SerializeField] float radius = 6;
     private Rigidbody rigidbody;
     [SerializeField] float KPH;
-    
+    [SerializeField] Rigidbody car;
+    //[SerializeField] Rigidbody RearRightWheel;
+    [SerializeField] float ForceHandBrake;
+    [SerializeField] float accel;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,6 +35,7 @@ public class Controller : MonoBehaviour
     // Update is called once per frame
     private void FixedUpdate()
     {
+        //handbrake();
         animateWheels();
         VehicleMovement();
         SteerVehicle();
@@ -74,27 +79,29 @@ public class Controller : MonoBehaviour
 
         //}
 
-        if (drive == driveType.allWheelDrive)
+        if (_drive == driveType.allWheelDrive)
         {
+            // Fait avancer les 4 roues
             for (int i = 0; i < wheels.Length; i++)
             {
-                wheels[i].motorTorque = IM.vertical * (motorTorque/4);
+                wheels[i].motorTorque = InputManager.vertical * (motorTorque / 4);
             }
         }
 
-        if (drive == driveType.frontWheelDrive)
+        if (_drive == driveType.frontWheelDrive)
         {
-            for (int i = 0; i < wheels.Length -2; i++)
+            for (int i = 0; i < wheels.Length - 2; i++)
             {
-                wheels[i].motorTorque = IM.vertical * (motorTorque / 2);
+                // Fait avancer les 2 roues avant
+                wheels[i].motorTorque = InputManager.vertical * (motorTorque / 2) * accel;
             }
         }
 
-        if (drive == driveType.rearWheelDrive)
+        if (_drive == driveType.rearWheelDrive)
         {
             for (int i = 2; i < wheels.Length; i++)
             {
-                wheels[i].motorTorque = IM.vertical * (motorTorque / 2);
+                wheels[i].motorTorque = InputManager.vertical * (motorTorque / 2);
             }
         }
 
@@ -105,24 +112,33 @@ public class Controller : MonoBehaviour
     private void SteerVehicle()
     {
         //acerman steering formula
-        //steerAngle = Mathf. Rad2Deg * Mathf.Atan(2.55f/ (radius + (1.5f/ 2)))* horizontalInput;
-        if (IM.horizontal > 0)
+        //steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius + (1.5f / 2))) * horizontalInput;
+        if (Input.GetAxis("Jump") == 0)
         {
-            //rear tracks size is set to 1.5f wheel base has been set to 2.55f (1.5f / 2))) horizontalInput;
-            wheels[0].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius + (1.5f / 2))) * IM.horizontal;
-            wheels[1].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius - (1.5f / 2))) * IM.horizontal;
-        }
-        else if (IM.horizontal < 0)
-        {
-            wheels[0].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius - (1.5f / 2))) * IM.horizontal;
-            wheels[1].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius + (1.5f / 2))) * IM.horizontal;
-            //transform.Rotate(Vector3.up * steerHelping);
+            if (InputManager.horizontal > 0)
+            {
+                //rear tracks size is set to 1.5f wheel base has been set to 2.55f (1.5f / 2))) horizontalInput;
+                wheels[0].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius + (1.5f / 2))) * InputManager.horizontal;
+                wheels[1].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius - (1.5f / 2))) * InputManager.horizontal;
+            }
+            else if (InputManager.horizontal < 0)
+            {
+                wheels[0].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius - (1.5f / 2))) * InputManager.horizontal;
+                wheels[1].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius + (1.5f / 2))) * InputManager.horizontal;
+
+            }
+            else
+            {
+                wheels[0].steerAngle = 0;
+                wheels[1].steerAngle = 0;
+            }
+
         }
         else
         {
-            wheels[0].steerAngle = 0;
-            wheels[1].steerAngle = 0;
+            float steerInput = Input.GetAxis("Horizontal"); transform.Rotate(Vector3.up * steerInput * ForceHandBrake * steeringMax * Time.deltaTime);
         }
+
 
 
         //for (int i = 0; i < wheels.Length -2; i++)
@@ -147,9 +163,28 @@ public class Controller : MonoBehaviour
     //Permet au reste du script d'interagir avec l'InputManager
     private void getObjects()
     {
-        IM = GetComponent<InputManager>();
+        InputManager = GetComponent<InputManager>();
         rigidbody = GetComponent<Rigidbody>();
     }
+
+    //private void handbrake()
+    //{
+    //    if (Input.GetAxis("Jump") == 1)
+    //    {
+    //        wheels[2].motorTorque = 0;
+    //        wheels[3].motorTorque = 0;
+    //        wheels[1].motorTorque = 0;
+    //        wheels[0].motorTorque = 0;
+
+    //        if (Input.GetKeyDown(KeyCode.A))
+    //        {
+    //            car.AddForce(Vector3.left * ForceHandBrake, ForceMode.Impulse);
+    //            Debug.Log("oui");
+    //        }
+
+    //        Debug.Log(wheels[2].motorTorque);
+    //    }
+    //}
 
 
 }

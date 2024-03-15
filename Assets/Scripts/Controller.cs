@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Controller : MonoBehaviour
@@ -16,7 +17,7 @@ public class Controller : MonoBehaviour
     [SerializeField] InputManager InputManager;
     [SerializeField] WheelCollider[] wheels = new WheelCollider[4];
     [SerializeField] GameObject[] wheelMesh = new GameObject[4];
-    [SerializeField] float motorTorque = 200;
+    [SerializeField] float _motorTorque;
     [SerializeField] float steeringMax = 4;
     [SerializeField] float radius = 6;
     private Rigidbody rigidbody;
@@ -25,6 +26,9 @@ public class Controller : MonoBehaviour
     //[SerializeField] Rigidbody RearRightWheel;
     [SerializeField] float ForceHandBrake;
     [SerializeField] float accel;
+
+    [Header("------- Texts Debug")]
+    [SerializeField] TMP_Text _wheelTorqueText;
 
     // Start is called before the first frame update
     void Start()
@@ -79,12 +83,41 @@ public class Controller : MonoBehaviour
 
         //}
 
+        //switch (_drive)
+        //{
+        //    case driveType.allWheelDrive:
+        //        for (int i = 0; i < wheels.Length; i++)
+        //        {
+        //            wheels[i].motorTorque = InputManager.vertical * (motorTorque / 4) * accel;
+        //        }
+
+        //        break;
+
+        //    case driveType.frontWheelDrive:
+        //        for (int i = 0; i < wheels.Length - 2; i++)
+        //        {
+        //            // Fait avancer les 2 roues avant
+        //            wheels[i].motorTorque = InputManager.vertical * (motorTorque / 2) * accel;
+        //        }
+
+        //        break;
+
+        //    case driveType.rearWheelDrive:
+        //        for (int i = 0; i < wheels.Length - 2; i++)
+        //        {
+        //            // Fait avancer les 2 roues avant
+        //            wheels[i].motorTorque = InputManager.vertical * (motorTorque / 2) * accel;
+        //        }
+
+        //        break;
+        //}
+
         if (_drive == driveType.allWheelDrive)
         {
             // Fait avancer les 4 roues
             for (int i = 0; i < wheels.Length; i++)
             {
-                wheels[i].motorTorque = InputManager.vertical * (motorTorque / 4);
+                wheels[i].motorTorque = InputManager.vertical * (_motorTorque / 4);
             }
         }
 
@@ -93,7 +126,9 @@ public class Controller : MonoBehaviour
             for (int i = 0; i < wheels.Length - 2; i++)
             {
                 // Fait avancer les 2 roues avant
-                wheels[i].motorTorque = InputManager.vertical * (motorTorque / 2) * accel;
+                wheels[i].motorTorque = InputManager.vertical * (_motorTorque / 2) + accel;
+                _wheelTorqueText.text = $"Wheel Torque : {wheels[i].motorTorque}";
+
             }
         }
 
@@ -101,11 +136,16 @@ public class Controller : MonoBehaviour
         {
             for (int i = 2; i < wheels.Length; i++)
             {
-                wheels[i].motorTorque = InputManager.vertical * (motorTorque / 2);
+                wheels[i].motorTorque = InputManager.vertical * (_motorTorque / 2);
             }
         }
 
         KPH = rigidbody.velocity.magnitude * 3.6f;
+
+        if (KPH > 100)
+        {
+            KPH = 100;
+        }
 
     }
 

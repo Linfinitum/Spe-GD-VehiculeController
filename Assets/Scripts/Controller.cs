@@ -26,6 +26,7 @@ public class Controller : MonoBehaviour
     //[SerializeField] Rigidbody RearRightWheel;
     [SerializeField] float ForceHandBrake;
     [SerializeField] float accel;
+    [SerializeField] float brakeForce;
 
     [Header("------- Texts Debug")]
     [SerializeField] TMP_Text _wheelTorqueText;
@@ -43,6 +44,10 @@ public class Controller : MonoBehaviour
         animateWheels();
         VehicleMovement();
         SteerVehicle();
+        if (Input.GetKey(KeyCode.S))
+        {
+            Brake();
+        }
     }
 
     private void VehicleMovement()
@@ -111,13 +116,18 @@ public class Controller : MonoBehaviour
 
         //        break;
         //}
+        
 
         if (_drive == driveType.allWheelDrive)
         {
             // Fait avancer les 4 roues
             for (int i = 0; i < wheels.Length; i++)
             {
-                wheels[i].motorTorque = InputManager.vertical * (_motorTorque / 4);
+                if (KPH < 100)
+                {
+                    wheels[i].motorTorque = InputManager.vertical * (_motorTorque / 4) * accel;
+                }
+
             }
         }
 
@@ -126,9 +136,8 @@ public class Controller : MonoBehaviour
             for (int i = 0; i < wheels.Length - 2; i++)
             {
                 // Fait avancer les 2 roues avant
-                wheels[i].motorTorque = InputManager.vertical * (_motorTorque / 2) + accel;
+                wheels[i].motorTorque = InputManager.vertical * (_motorTorque / 2) * accel;
                 _wheelTorqueText.text = $"Wheel Torque : {wheels[i].motorTorque}";
-
             }
         }
 
@@ -136,16 +145,13 @@ public class Controller : MonoBehaviour
         {
             for (int i = 2; i < wheels.Length; i++)
             {
-                wheels[i].motorTorque = InputManager.vertical * (_motorTorque / 2);
+                wheels[i].motorTorque = InputManager.vertical * (_motorTorque / 2) * accel;
             }
         }
 
         KPH = rigidbody.velocity.magnitude * 3.6f;
 
-        if (KPH > 100)
-        {
-            KPH = 100;
-        }
+        
 
     }
 
@@ -178,14 +184,6 @@ public class Controller : MonoBehaviour
         {
             float steerInput = Input.GetAxis("Horizontal"); transform.Rotate(Vector3.up * steerInput * ForceHandBrake * steeringMax * Time.deltaTime);
         }
-
-
-
-        //for (int i = 0; i < wheels.Length -2; i++)
-        //{
-        //    wheels[i].steerAngle = IM.horizontal * steeringMax;
-        //}
-
     }
 
     void animateWheels()
@@ -207,24 +205,25 @@ public class Controller : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();
     }
 
-    //private void handbrake()
-    //{
-    //    if (Input.GetAxis("Jump") == 1)
-    //    {
-    //        wheels[2].motorTorque = 0;
-    //        wheels[3].motorTorque = 0;
-    //        wheels[1].motorTorque = 0;
-    //        wheels[0].motorTorque = 0;
+    private void handbrake()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            wheels[2].motorTorque = -1000;
+            wheels[3].motorTorque = -1000;
+            wheels[1].motorTorque = -1000;
+            wheels[0].motorTorque = -1000;
+        }
+    }
 
-    //        if (Input.GetKeyDown(KeyCode.A))
-    //        {
-    //            car.AddForce(Vector3.left * ForceHandBrake, ForceMode.Impulse);
-    //            Debug.Log("oui");
-    //        }
+    private void Brake()
+    {
+        // Appliquer une force inverse à la direction actuelle de la voiture
+        Vector3 brakeDirection = -rigidbody.velocity.normalized;
 
-    //        Debug.Log(wheels[2].motorTorque);
-    //    }
-    //}
+        // Appliquer la force de freinage
+        rigidbody.AddForce(brakeDirection * brakeForce, ForceMode.Force);
+    }
 
 
 }

@@ -27,6 +27,7 @@ public class Controller : MonoBehaviour
     [SerializeField] float ForceHandBrake;
     [SerializeField] float accel;
     [SerializeField] float brakeForce;
+    [SerializeField] float LimitForce;
 
     [Header("------- Texts Debug")]
     [SerializeField] TMP_Text _wheelTorqueText;
@@ -44,10 +45,8 @@ public class Controller : MonoBehaviour
         animateWheels();
         VehicleMovement();
         SteerVehicle();
-        if (Input.GetKey(KeyCode.S))
-        {
-            Brake();
-        }
+        Brake();
+        Limit();
     }
 
     private void VehicleMovement()
@@ -123,10 +122,10 @@ public class Controller : MonoBehaviour
             // Fait avancer les 4 roues
             for (int i = 0; i < wheels.Length; i++)
             {
-                if (KPH < 100)
-                {
+                
+                
                     wheels[i].motorTorque = InputManager.vertical * (_motorTorque / 4) * accel;
-                }
+                
 
             }
         }
@@ -136,7 +135,7 @@ public class Controller : MonoBehaviour
             for (int i = 0; i < wheels.Length - 2; i++)
             {
                 // Fait avancer les 2 roues avant
-                wheels[i].motorTorque = InputManager.vertical * (_motorTorque / 2) * accel;
+                wheels[i].motorTorque = InputManager.vertical * (_motorTorque / 2 ) * accel;
                 _wheelTorqueText.text = $"Wheel Torque : {wheels[i].motorTorque}";
             }
         }
@@ -150,6 +149,20 @@ public class Controller : MonoBehaviour
         }
 
         KPH = rigidbody.velocity.magnitude * 3.6f;
+
+        //if (KPH > 100)
+        //{
+        //    Debug.Log("KPH +100");
+        //    for (int i = 0; i < wheels.Length; i++)
+        //    {
+        //        if (KPH < 100)
+        //        {
+        //            wheels[i].motorTorque = InputManager.vertical * (_motorTorque / 4) * accel;
+        //        }
+
+        //    }
+
+        //}
 
         
 
@@ -221,9 +234,28 @@ public class Controller : MonoBehaviour
         // Appliquer une force inverse à la direction actuelle de la voiture
         Vector3 brakeDirection = -rigidbody.velocity.normalized;
 
-        // Appliquer la force de freinage
-        rigidbody.AddForce(brakeDirection * brakeForce, ForceMode.Force);
+        if (Input.GetKey(KeyCode.Space))
+        {
+            Debug.Log(brakeDirection);
+
+            // Appliquer la force de freinage
+            rigidbody.AddForce(brakeDirection * brakeForce, ForceMode.Force);
+        }
     }
 
+    private void Limit()
+    {
+        // Appliquer une force inverse à la direction actuelle de la voiture
+        Vector3 LimitDirection = -rigidbody.velocity.normalized;
+        
+        if (KPH > 100)
+        {
+            Debug.Log(LimitDirection);
 
+            // Appliquer la force de freinage
+            rigidbody.AddForce(LimitDirection * LimitForce, ForceMode.Force);
+        }
+    }
+
+    
 }

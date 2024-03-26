@@ -14,7 +14,7 @@ public class Controller : MonoBehaviour
 
     [SerializeField] driveType _drive;
 
-    [SerializeField] InputManager InputManager;
+    public InputManager InputManager;
     [SerializeField] WheelCollider[] wheels = new WheelCollider[4];
     [SerializeField] GameObject[] wheelMesh = new GameObject[4];
     [SerializeField] float _motorTorque;
@@ -32,6 +32,7 @@ public class Controller : MonoBehaviour
     [Header("------- Texts Debug")]
     [SerializeField] TMP_Text _wheelTorqueText;
 
+   
     // Start is called before the first frame update
     void Start()
     {
@@ -47,88 +48,14 @@ public class Controller : MonoBehaviour
         SteerVehicle();
         Brake();
         Limit();
+        
+
     }
+
+    
 
     private void VehicleMovement()
     {
-        //Si j'appuie sur Z les roues prennent la puissance du torque
-        //if (Input.GetKey(KeyCode.W))
-        //{
-        //    for (int i = 0; i < wheels.Length; i++)
-        //    {
-        //        wheels[i].motorTorque = torque;
-        //    }
-        //}
-
-
-        //else
-        //{
-        //    for (int i = 0; i < wheels.Length; i++)
-        //    {
-        //        wheels[i].motorTorque = 0;
-        //    }
-        //}
-
-        //
-        //if (Input.GetAxis("Horizontal") != 0)
-        //{
-        //    for (int i = 0; i < wheels.Length - 2; i++)
-        //    {
-        //        wheels[i].steerAngle = Input.GetAxis("Horizontal") * steeringMax;
-        //    }
-        //}
-        //else
-        //{
-
-        //    for (int i = 0; i < wheels.Length - 2; i++)
-        //    {
-        //        wheels[i].steerAngle = 0;
-        //    }
-
-        //}
-
-        //switch (_drive)
-        //{
-        //    case driveType.allWheelDrive:
-        //        for (int i = 0; i < wheels.Length; i++)
-        //        {
-        //            wheels[i].motorTorque = InputManager.vertical * (motorTorque / 4) * accel;
-        //        }
-
-        //        break;
-
-        //    case driveType.frontWheelDrive:
-        //        for (int i = 0; i < wheels.Length - 2; i++)
-        //        {
-        //            // Fait avancer les 2 roues avant
-        //            wheels[i].motorTorque = InputManager.vertical * (motorTorque / 2) * accel;
-        //        }
-
-        //        break;
-
-        //    case driveType.rearWheelDrive:
-        //        for (int i = 0; i < wheels.Length - 2; i++)
-        //        {
-        //            // Fait avancer les 2 roues avant
-        //            wheels[i].motorTorque = InputManager.vertical * (motorTorque / 2) * accel;
-        //        }
-
-        //        break;
-        //}
-        
-
-        if (_drive == driveType.allWheelDrive)
-        {
-            // Fait avancer les 4 roues
-            for (int i = 0; i < wheels.Length; i++)
-            {
-                
-                
-                    wheels[i].motorTorque = InputManager.vertical * (_motorTorque / 4) * accel;
-                
-
-            }
-        }
 
         if (_drive == driveType.frontWheelDrive)
         {
@@ -147,24 +74,17 @@ public class Controller : MonoBehaviour
                 wheels[i].motorTorque = InputManager.vertical * (_motorTorque / 2) * accel;
             }
         }
+        
+        if (_drive == driveType.allWheelDrive)
+        {
+            // Fait avancer les 4 roues
+            for (int i = 0; i < wheels.Length; i++)
+            {
+                    wheels[i].motorTorque = InputManager.vertical * (_motorTorque / 4) * accel;
+            }
+        }
 
         KPH = rigidbody.velocity.magnitude * 3.6f;
-
-        //if (KPH > 100)
-        //{
-        //    Debug.Log("KPH +100");
-        //    for (int i = 0; i < wheels.Length; i++)
-        //    {
-        //        if (KPH < 100)
-        //        {
-        //            wheels[i].motorTorque = InputManager.vertical * (_motorTorque / 4) * accel;
-        //        }
-
-        //    }
-
-        //}
-
-        
 
     }
 
@@ -258,4 +178,6 @@ public class Controller : MonoBehaviour
     }
 
     
+
+
 }

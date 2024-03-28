@@ -1418,6 +1418,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 723782978674044533, guid: 8b8354751ba805a4488773a783ab3c3c, type: 3}
+      propertyPath: m_SuspensionSpring.damper
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 723782978674044533, guid: 8b8354751ba805a4488773a783ab3c3c, type: 3}
+      propertyPath: m_SuspensionSpring.spring
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1578657435478246509, guid: 8b8354751ba805a4488773a783ab3c3c, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4738d13ebfb696d42bc45842cadd9685, type: 2}
+    - target: {fileID: 1925394351461348975, guid: 8b8354751ba805a4488773a783ab3c3c, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 704dc8884b72c49498432db9f56885a8, type: 2}
+    - target: {fileID: 2430661469212589040, guid: 8b8354751ba805a4488773a783ab3c3c, type: 3}
+      propertyPath: m_SuspensionSpring.damper
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 2430661469212589040, guid: 8b8354751ba805a4488773a783ab3c3c, type: 3}
+      propertyPath: m_SuspensionSpring.spring
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 3500307090950591211, guid: 8b8354751ba805a4488773a783ab3c3c, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4738d13ebfb696d42bc45842cadd9685, type: 2}
+    - target: {fileID: 3591767227134985772, guid: 8b8354751ba805a4488773a783ab3c3c, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 704dc8884b72c49498432db9f56885a8, type: 2}
     - target: {fileID: 4462001046240185977, guid: 8b8354751ba805a4488773a783ab3c3c, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -1462,6 +1494,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5463174228115558187, guid: 8b8354751ba805a4488773a783ab3c3c, type: 3}
+      propertyPath: m_SuspensionSpring.damper
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 5463174228115558187, guid: 8b8354751ba805a4488773a783ab3c3c, type: 3}
+      propertyPath: m_SuspensionSpring.spring
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 5665740609693907333, guid: 8b8354751ba805a4488773a783ab3c3c, type: 3}
+      propertyPath: m_SuspensionSpring.damper
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 5665740609693907333, guid: 8b8354751ba805a4488773a783ab3c3c, type: 3}
+      propertyPath: m_SuspensionSpring.spring
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8575560977746410591, guid: 8b8354751ba805a4488773a783ab3c3c, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 704dc8884b72c49498432db9f56885a8, type: 2}
     - target: {fileID: 8708954436894108018, guid: 8b8354751ba805a4488773a783ab3c3c, type: 3}
       propertyPath: m_Name
       value: kart

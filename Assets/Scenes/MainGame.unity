@@ -1418,22 +1418,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 723782978674044533, guid: 8b8354751ba805a4488773a783ab3c3c, type: 3}
-      propertyPath: m_Mass
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 723782978674044533, guid: 8b8354751ba805a4488773a783ab3c3c, type: 3}
-      propertyPath: m_Radius
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1674276122367772561, guid: 8b8354751ba805a4488773a783ab3c3c, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.188
-      objectReference: {fileID: 0}
-    - target: {fileID: 2430661469212589040, guid: 8b8354751ba805a4488773a783ab3c3c, type: 3}
-      propertyPath: m_Mass
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4462001046240185977, guid: 8b8354751ba805a4488773a783ab3c3c, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -1477,30 +1461,6 @@ PrefabInstance:
     - target: {fileID: 4462001046240185977, guid: 8b8354751ba805a4488773a783ab3c3c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5463174228115558187, guid: 8b8354751ba805a4488773a783ab3c3c, type: 3}
-      propertyPath: m_Mass
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5463174228115558187, guid: 8b8354751ba805a4488773a783ab3c3c, type: 3}
-      propertyPath: m_Radius
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5665740609693907333, guid: 8b8354751ba805a4488773a783ab3c3c, type: 3}
-      propertyPath: m_Mass
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7268983530400985197, guid: 8b8354751ba805a4488773a783ab3c3c, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1.235
-      objectReference: {fileID: 0}
-    - target: {fileID: 7434739996634387639, guid: 8b8354751ba805a4488773a783ab3c3c, type: 3}
-      propertyPath: accel
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 7434739996634387639, guid: 8b8354751ba805a4488773a783ab3c3c, type: 3}
-      propertyPath: _motorTorque
-      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 8708954436894108018, guid: 8b8354751ba805a4488773a783ab3c3c, type: 3}
       propertyPath: m_Name
@@ -2221,7 +2181,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1657955866
 MonoBehaviour:
   m_ObjectHideFlags: 0

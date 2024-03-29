@@ -4,31 +4,20 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    public GameObject Player;
-    public GameObject Child;
+    public GameObject LookAt;
+    public GameObject Constraint;
     public float speed;
-    private controller RR;
 
-    private void Awake()
-    {
-        RR = Player.GetComponent<controller>();
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     private void FixedUpdate()
     {
         follow();
-        //speed = (RR.KPH >= 50) ? 20 : RR.KPH / 4;
     }
 
     private void follow()
     {
-        gameObject.transform.position = Vector3.Lerp(transform.position, Child.transform.position, Time.deltaTime * speed);
-        gameObject.transform.LookAt(Player.gameObject.transform.position);
+        gameObject.transform.position = Vector3.Lerp(transform.position, Constraint.transform.position, Time.deltaTime * speed);
+        gameObject.transform.LookAt(LookAt.gameObject.transform.position);
     }
 }
+
+//

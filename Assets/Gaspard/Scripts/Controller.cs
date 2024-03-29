@@ -30,11 +30,15 @@ public class Controller : MonoBehaviour
     [SerializeField] float brakeForce;
     [SerializeField] float LimitForce;
     [SerializeField] Skidmarks SkidmarkController;
+    [SerializeField] GameObject Smoke_Wheel;
+    [SerializeField] ParticleSystem SmokeTire1;
+    [SerializeField] ParticleSystem SmokeTire2;
 
     [Header("------- Texts Debug")]
     [SerializeField] TMP_Text _wheelTorqueText;
 
-   
+    private float lastKPH;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -66,7 +70,9 @@ public class Controller : MonoBehaviour
     private void Update()
     {
         Reset_pos();
-            
+        Wheel_Smoke();
+
+
     }
 
 
@@ -79,7 +85,7 @@ public class Controller : MonoBehaviour
             for (int i = 0; i < wheels.Length - 2; i++)
             {
                 // Fait avancer les 2 roues avant
-                wheels[i].motorTorque = InputManager.vertical * (_motorTorque / 2 ) * accel;
+                wheels[i].motorTorque = InputManager.vertical * (_motorTorque / 2) * accel;
                 //_wheelTorqueText.text = $"Wheel Torque : {wheels[i].motorTorque}";
             }
         }
@@ -91,13 +97,13 @@ public class Controller : MonoBehaviour
                 wheels[i].motorTorque = InputManager.vertical * (_motorTorque / 2) * accel;
             }
         }
-        
+
         if (_drive == driveType.allWheelDrive)
         {
             // Fait avancer les 4 roues
             for (int i = 0; i < wheels.Length; i++)
             {
-                    wheels[i].motorTorque = InputManager.vertical * (_motorTorque / 4) * accel;
+                wheels[i].motorTorque = InputManager.vertical * (_motorTorque / 4) * accel;
             }
         }
 
@@ -184,7 +190,7 @@ public class Controller : MonoBehaviour
     {
         // Appliquer une force inverse à la direction actuelle de la voiture
         Vector3 LimitDirection = -rigidbody.velocity.normalized;
-        
+
         if (KPH > 100)
         {
             Debug.Log(LimitDirection);
@@ -203,7 +209,61 @@ public class Controller : MonoBehaviour
         }
     }
 
+    private void Awake()
+    {
+        lastKPH = 0f;
+    }
+
+    private void Wheel_Smoke()
+    {
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.Space))
+        {
+            if (KPH < 1 && KPH > 0)
+            { 
+                //a l arret
+                SmokeTire1.startLifetime = Mathf.Lerp(0, 1, 0);
+                SmokeTire2.startLifetime = Mathf.Lerp(0, 1, 0);
+            }
+
+            else if (lastKPH > KPH)
+            {
+                //décelere
+                SmokeTire1.startLifetime = Mathf.Lerp(0, 1, 0.4f);
+                SmokeTire2.startLifetime = Mathf.Lerp(0, 1, 0.4f);
+            }
+            else if(lastKPH < KPH)
+            {
+                //accelere
+                SmokeTire1.startLifetime = Mathf.Lerp(0, 1, 0.7f);
+                SmokeTire2.startLifetime = Mathf.Lerp(0, 1, 0.7f);
+            }
+
+        }
+
+        else
+        {
+            SmokeTire1.startLifetime = Mathf.Lerp(0, 1, 0);
+            SmokeTire2.startLifetime = Mathf.Lerp(0, 1, 0);
+        }
 
 
+        lastKPH = KPH;
+    }
+    
+    //if (KPH > 15)
+    //{
+    //    SmokeTire1.startLifetime = Mathf.Lerp(0, 1, 0.4f);
+    //    SmokeTire2.startLifetime = Mathf.Lerp(0, 1, 0.4f);
+    //}
 
+    //else
+    //{
+    //    SmokeTire1.startLifetime = Mathf.Lerp(0, 1, 0);
+    //    SmokeTire2.startLifetime = Mathf.Lerp(0, 1, 0);
+    //}
 }
+
+
+
+
+

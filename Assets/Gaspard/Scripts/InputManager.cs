@@ -6,7 +6,7 @@ public class InputManager : MonoBehaviour
 {
     public float vertical;
     public float horizontal;
-    public bool handbrake;
+    //public bool handbrake;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,13 +21,8 @@ public class InputManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        vertical = Input.GetAxis("Vertical");
-        horizontal = Input.GetAxis("Horizontal");
-
-        //Jump psk cela retourne une valeur entre 0 et 1
-        handbrake = (Input.GetAxis("Jump") != 0)? true : false;
-
-        
+        //vertical = Input.GetAxis("Vertical");
+        //horizontal = Input.GetAxis("Horizontal");
 
         //if (handbrake = Input.GetAxis("Jump") != 0)
         //{

@@ -32,7 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 35.548, y: 0, z: 0}
 --- !u!20 &2020123998416149588
 Camera:
@@ -107,4 +107,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LookAt: {fileID: 0}
   Constraint: {fileID: 0}
-  speed: 1
+  speed: 10

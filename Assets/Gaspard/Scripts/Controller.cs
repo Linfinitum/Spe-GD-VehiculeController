@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
 public class Controller : MonoBehaviour
 {
     internal enum driveType
@@ -39,10 +40,18 @@ public class Controller : MonoBehaviour
 
     private float lastKPH;
 
+    private bool handbrake = false;
+    private Vector2 MoveSide = Vector2.zero;
+    private float Rear;
+    private float Forward;
+    private float RearForward = 0f;
+
     // Start is called before the first frame update
     void Start()
     {
         getObjects();
+
+
 
         SkidmarkController = FindObjectOfType<Skidmarks>();
         foreach (WheelCollider collider in wheels)
@@ -64,7 +73,19 @@ public class Controller : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        Debug.Log("ssssssssssssssssssss");
+        MoveSide = context.ReadValue<Vector2>();
+    }
+    public void OnRear(InputAction.CallbackContext context)
+    {
+        Rear = context.ReadValue<float>();
+    }
+    public void OnForward(InputAction.CallbackContext context)
+    {
+        Forward = context.ReadValue<float>();
+    }
+    public void OnHandbrake(InputAction.CallbackContext context)
+    {
+        handbrake = context.action.triggered;
     }
 
     private void Update()
@@ -72,7 +93,7 @@ public class Controller : MonoBehaviour
         Reset_pos();
         Wheel_Smoke();
 
-
+        RearForward = (Rear * -1) + Forward;
     }
 
 
@@ -85,7 +106,7 @@ public class Controller : MonoBehaviour
             for (int i = 0; i < wheels.Length - 2; i++)
             {
                 // Fait avancer les 2 roues avant
-                wheels[i].motorTorque = InputManager.vertical * (_motorTorque / 2) * accel;
+                wheels[i].motorTorque = RearForward * (_motorTorque / 2) * accel;
                 //_wheelTorqueText.text = $"Wheel Torque : {wheels[i].motorTorque}";
             }
         }
@@ -94,7 +115,7 @@ public class Controller : MonoBehaviour
         {
             for (int i = 2; i < wheels.Length; i++)
             {
-                wheels[i].motorTorque = InputManager.vertical * (_motorTorque / 2) * accel;
+                wheels[i].motorTorque = RearForward * (_motorTorque / 2) * accel;
             }
         }
 
@@ -103,7 +124,7 @@ public class Controller : MonoBehaviour
             // Fait avancer les 4 roues
             for (int i = 0; i < wheels.Length; i++)
             {
-                wheels[i].motorTorque = InputManager.vertical * (_motorTorque / 4) * accel;
+                wheels[i].motorTorque = RearForward * (_motorTorque / 4) * accel;
             }
         }
 
@@ -115,30 +136,16 @@ public class Controller : MonoBehaviour
     {
         //acerman steering formula
         //steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius + (1.5f / 2))) * horizontalInput;
-        if (Input.GetAxis("Jump") == 0)
+        if (handbrake == false)
         {
-            if (InputManager.horizontal > 0)
-            {
-                //rear tracks size is set to 1.5f wheel base has been set to 2.55f (1.5f / 2))) horizontalInput;
-                wheels[0].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius + (1.5f / 2))) * InputManager.horizontal;
-                wheels[1].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius - (1.5f / 2))) * InputManager.horizontal;
-            }
-            else if (InputManager.horizontal < 0)
-            {
-                wheels[0].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius - (1.5f / 2))) * InputManager.horizontal;
-                wheels[1].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius + (1.5f / 2))) * InputManager.horizontal;
-
-            }
-            else
-            {
-                wheels[0].steerAngle = 0;
-                wheels[1].steerAngle = 0;
-            }
-
+            print(MoveSide.x);
+            //rear tracks size is set to 1.5f wheel base has been set to 2.55f (1.5f / 2))) horizontalInput;
+            wheels[0].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius + (1.5f / 2))) * MoveSide.x;
+            wheels[1].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius - (1.5f / 2))) * MoveSide.x;
         }
         else
         {
-            float steerInput = Input.GetAxis("Horizontal"); transform.Rotate(Vector3.up * steerInput * ForceHandBrake * steeringMax * Time.deltaTime);
+            transform.Rotate(Vector3.up * MoveSide.x * ForceHandBrake * steeringMax * Time.deltaTime);
         }
     }
 
@@ -161,7 +168,7 @@ public class Controller : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();
     }
 
-    private void handbrake()
+    private void handbrakestop()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -177,9 +184,9 @@ public class Controller : MonoBehaviour
         // Appliquer une force inverse à la direction actuelle de la voiture
         Vector3 brakeDirection = -rigidbody.velocity.normalized;
 
-        if (Input.GetKey(KeyCode.Space))
+        if (handbrake)
         {
-            Debug.Log(brakeDirection);
+            //Debug.Log(brakeDirection);
 
             // Appliquer la force de freinage
             rigidbody.AddForce(brakeDirection * brakeForce, ForceMode.Force);
@@ -193,7 +200,7 @@ public class Controller : MonoBehaviour
 
         if (KPH > 100)
         {
-            Debug.Log(LimitDirection);
+            //Debug.Log(LimitDirection);
 
             // Appliquer la force de freinage
             rigidbody.AddForce(LimitDirection * LimitForce, ForceMode.Force);
@@ -216,10 +223,10 @@ public class Controller : MonoBehaviour
 
     private void Wheel_Smoke()
     {
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.Space))
+        if (Forward >= 0.8f || Rear >= 0.8f || handbrake == true)
         {
             if (KPH < 1 && KPH > 0)
-            { 
+            {
                 //a l arret
                 SmokeTire1.startLifetime = Mathf.Lerp(0, 1, 0);
                 SmokeTire2.startLifetime = Mathf.Lerp(0, 1, 0);
@@ -231,7 +238,7 @@ public class Controller : MonoBehaviour
                 SmokeTire1.startLifetime = Mathf.Lerp(0, 1, 0.4f);
                 SmokeTire2.startLifetime = Mathf.Lerp(0, 1, 0.4f);
             }
-            else if(lastKPH < KPH)
+            else if (lastKPH < KPH)
             {
                 //accelere
                 SmokeTire1.startLifetime = Mathf.Lerp(0, 1, 0.7f);
@@ -249,7 +256,7 @@ public class Controller : MonoBehaviour
 
         lastKPH = KPH;
     }
-    
+
     //if (KPH > 15)
     //{
     //    SmokeTire1.startLifetime = Mathf.Lerp(0, 1, 0.4f);

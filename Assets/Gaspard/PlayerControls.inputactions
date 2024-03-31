@@ -76,6 +76,17 @@
                 },
                 {
                     "name": "",
+                    "id": "3724611b-78d1-4097-89a9-d51827df87f6",
+                    "path": "<HID::Logitech G923 Racing Wheel for PlayStation 4 and PC>/trigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "SteeringWheel",
+                    "action": "HandBreak",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "b0f42496-8730-45d3-a955-c141bda76428",
                     "path": "<Keyboard>/w",
                     "interactions": "",
@@ -114,6 +125,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
+                    "action": "Rear",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c92062b0-702f-40ee-9b3d-e8c306f552cc",
+                    "path": "<HID::Logitech G923 Racing Wheel for PlayStation 4 and PC>/button4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "SteeringWheel",
                     "action": "Rear",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -164,6 +186,17 @@
                 },
                 {
                     "name": "",
+                    "id": "c6280dbc-b279-416b-b2ff-ed3f9d79c596",
+                    "path": "<HID::Logitech G923 Racing Wheel for PlayStation 4 and PC>/stick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "SteeringWheel",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "fe667ddd-57c3-441a-b284-5271f0354523",
                     "path": "<Keyboard>/r",
                     "interactions": "",
@@ -181,6 +214,28 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Respawn",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "da3239ae-a5f1-4276-bf8e-ae29d59b7031",
+                    "path": "<HID::Logitech G923 Racing Wheel for PlayStation 4 and PC>/button2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "SteeringWheel",
+                    "action": "Respawn",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e8264877-c159-49f4-992f-0bc0c1fd94d9",
+                    "path": "<HID::Logitech G923 Racing Wheel for PlayStation 4 and PC>/stick/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "SteeringWheel",
+                    "action": "Forward",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -206,6 +261,17 @@
                 {
                     "devicePath": "<Gamepad>",
                     "isOptional": true,
+                    "isOR": false
+                }
+            ]
+        },
+        {
+            "name": "SteeringWheel",
+            "bindingGroup": "SteeringWheel",
+            "devices": [
+                {
+                    "devicePath": "<HID::Logitech G923 Racing Wheel for PlayStation 4 and PC>",
+                    "isOptional": false,
                     "isOR": false
                 }
             ]

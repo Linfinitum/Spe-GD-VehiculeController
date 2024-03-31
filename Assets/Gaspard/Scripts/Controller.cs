@@ -16,7 +16,6 @@ public class Controller : MonoBehaviour
 
     [SerializeField] driveType _drive;
 
-    public InputManager InputManager;
     [SerializeField] WheelCollider[] wheels = new WheelCollider[4];
     [SerializeField] GameObject[] wheelMesh = new GameObject[4];
     [SerializeField] float _motorTorque;
@@ -41,17 +40,15 @@ public class Controller : MonoBehaviour
     private float lastKPH;
 
     private bool handbrake = false;
+    private bool respawn = false;
     private Vector2 MoveSide = Vector2.zero;
     private float Rear;
     private float Forward;
     private float RearForward = 0f;
 
-    // Start is called before the first frame update
     void Start()
     {
         getObjects();
-
-
 
         SkidmarkController = FindObjectOfType<Skidmarks>();
         foreach (WheelCollider collider in wheels)
@@ -63,7 +60,6 @@ public class Controller : MonoBehaviour
     // Update is called once per frame
     private void FixedUpdate()
     {
-        //handbrake();
         animateWheels();
         VehicleMovement();
         SteerVehicle();
@@ -86,6 +82,11 @@ public class Controller : MonoBehaviour
     public void OnHandbrake(InputAction.CallbackContext context)
     {
         handbrake = context.action.triggered;
+    }
+    
+    public void OnRespawn(InputAction.CallbackContext context)
+    {
+        respawn = context.action.triggered;
     }
 
     private void Update()
@@ -135,11 +136,9 @@ public class Controller : MonoBehaviour
     private void SteerVehicle()
     {
         //acerman steering formula
-        //steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius + (1.5f / 2))) * horizontalInput;
         if (handbrake == false)
         {
             print(MoveSide.x);
-            //rear tracks size is set to 1.5f wheel base has been set to 2.55f (1.5f / 2))) horizontalInput;
             wheels[0].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius + (1.5f / 2))) * MoveSide.x;
             wheels[1].steerAngle = Mathf.Rad2Deg * Mathf.Atan(2.55f / (radius - (1.5f / 2))) * MoveSide.x;
         }
@@ -164,20 +163,10 @@ public class Controller : MonoBehaviour
     //Permet au reste du script d'interagir avec l'InputManager
     private void getObjects()
     {
-        InputManager = GetComponent<InputManager>();
+        //InputManager = GetComponent<InputManager>();
         rigidbody = GetComponent<Rigidbody>();
     }
 
-    private void handbrakestop()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            wheels[2].motorTorque = -1000;
-            wheels[3].motorTorque = -1000;
-            wheels[1].motorTorque = -1000;
-            wheels[0].motorTorque = -1000;
-        }
-    }
 
     private void Brake()
     {
@@ -209,10 +198,25 @@ public class Controller : MonoBehaviour
 
     private void Reset_pos()
     {
-        if (Input.GetKeyDown(KeyCode.R))
+        if (respawn == true)
         {
-            transform.position += Vector3.up * 10f;
-            transform.rotation = Quaternion.identity;
+            // Récupérer la rotation actuelle
+            Quaternion currentRotation = transform.rotation;
+
+            // Réinitialiser la rotation sur l'axe X uniquement
+            currentRotation.x = 0f;
+            currentRotation.z = 0f;
+
+            // Réappliquer la rotation
+            transform.rotation = currentRotation;
+
+            transform.position += Vector3.up * 2f;
+            //transform.rotation = Quaternion.identity;
+            rigidbody.constraints = RigidbodyConstraints.FreezeRotationZ;
+            rigidbody.constraints = RigidbodyConstraints.FreezeRotationX;
+            rigidbody.constraints = RigidbodyConstraints.None;
+
+            respawn = false;
         }
     }
 

@@ -983,7 +983,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4462001046240185977}
   - component: {fileID: 444958690144168587}
-  - component: {fileID: 9175668559923230573}
   - component: {fileID: 7434739996634387639}
   - component: {fileID: 1419067226495230656}
   m_Layer: 0
@@ -1042,20 +1041,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &9175668559923230573
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8708954436894108018}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7bdca820f4ce9eb40a1187b54d08b643, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  vertical: 0
-  horizontal: 0
 --- !u!114 &7434739996634387639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1069,7 +1054,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _drive: 2
-  InputManager: {fileID: 9175668559923230573}
   wheels:
   - {fileID: 5463174228115558187}
   - {fileID: 723782978674044533}
@@ -1085,7 +1069,7 @@ MonoBehaviour:
   radius: 6
   KPH: 0
   car: {fileID: 5824518527118501288}
-  ForceHandBrake: 1
+  ForceHandBrake: 0.5
   accel: 20
   brakeForce: 15000
   LimitForce: 20000
@@ -1183,6 +1167,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: a74b9ff0-ab09-4abd-acfe-5b8e8a9edae5
     m_ActionName: Player/Rear[/Keyboard/s,/SwitchProControllerHID/leftTrigger]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7434739996634387639}
+        m_TargetAssemblyTypeName: Controller, Assembly-CSharp
+        m_MethodName: OnRespawn
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 3a846ba9-da96-4a0a-8256-4d33c2e2ad1c
+    m_ActionName: Player/Respawn[/Keyboard/r,/XInputControllerWindows/buttonNorth,/SwitchProControllerHID/buttonNorth]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Keyboard
   m_DefaultActionMap: Player

@@ -83,7 +83,7 @@ public class Controller : MonoBehaviour
     {
         handbrake = context.action.triggered;
     }
-    
+
     public void OnRespawn(InputAction.CallbackContext context)
     {
         respawn = context.action.triggered;
@@ -170,6 +170,8 @@ public class Controller : MonoBehaviour
 
     private void Brake()
     {
+
+        print("collision");
         // Appliquer une force inverse à la direction actuelle de la voiture
         Vector3 brakeDirection = -rigidbody.velocity.normalized;
 
@@ -180,6 +182,7 @@ public class Controller : MonoBehaviour
             // Appliquer la force de freinage
             rigidbody.AddForce(brakeDirection * brakeForce, ForceMode.Force);
         }
+
     }
 
     private void Limit()

@@ -33,6 +33,7 @@ public class Controller : MonoBehaviour
     [SerializeField] GameObject Smoke_Wheel;
     [SerializeField] ParticleSystem SmokeTire1;
     [SerializeField] ParticleSystem SmokeTire2;
+    [SerializeField] GameObject Rope;
 
     [Header("------- Texts Debug")]
     [SerializeField] TMP_Text _wheelTorqueText;
@@ -45,6 +46,7 @@ public class Controller : MonoBehaviour
     private float Rear;
     private float Forward;
     private float RearForward = 0f;
+    
 
     void Start()
     {
@@ -55,6 +57,7 @@ public class Controller : MonoBehaviour
         {
             collider.gameObject.GetComponent<WheelSkid>().skidmarksController = SkidmarkController;
         }
+
     }
 
     // Update is called once per frame
@@ -220,6 +223,7 @@ public class Controller : MonoBehaviour
             rigidbody.constraints = RigidbodyConstraints.None;
 
             respawn = false;
+
         }
     }
 

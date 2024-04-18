@@ -33,7 +33,9 @@ public class Controller : MonoBehaviour
     [SerializeField] GameObject Smoke_Wheel;
     [SerializeField] ParticleSystem SmokeTire1;
     [SerializeField] ParticleSystem SmokeTire2;
-    [SerializeField] GameObject Rope;
+    [SerializeField] GameObject NewRope;
+    [SerializeField] GameObject AnchoreRope;
+    private GameObject _rope;
 
     [Header("------- Texts Debug")]
     [SerializeField] TMP_Text _wheelTorqueText;
@@ -58,6 +60,7 @@ public class Controller : MonoBehaviour
             collider.gameObject.GetComponent<WheelSkid>().skidmarksController = SkidmarkController;
         }
 
+        _rope = Instantiate(NewRope, AnchoreRope.transform.position, Quaternion.Euler(70f, 0f, 0f));
     }
 
     // Update is called once per frame
@@ -224,6 +227,10 @@ public class Controller : MonoBehaviour
 
             respawn = false;
 
+            Destroy(_rope);
+            _rope = Instantiate(NewRope, AnchoreRope.transform.position, Quaternion.Euler(70f, 0f, 0f));
+            _rope.transform.SetParent(transform);
+            _rope.GetComponent<RopeFishing>().Init(AnchoreRope);
         }
     }
 
